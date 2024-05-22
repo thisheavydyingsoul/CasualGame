@@ -15,10 +15,12 @@ namespace CasualGame.Movement
 
         [SerializeField]
         private float _maxRadiansDelta = 10f;
-
-
         public Vector3 MovementDirection { get; set; }
         public Vector3 LookDirection { get; set; }
+
+        private float _accelerationTimerSeconds = 0f;
+        private float _bonusAcceleration = 1f;
+        private bool _speedIncreased = false;
 
         private CharacterController _characterController;
 
@@ -28,11 +30,17 @@ namespace CasualGame.Movement
         }
 
         protected void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
+        { 
+            if (_speedIncreased && _accelerationTimerSeconds <= 0)
             {
-                _speed *= _acceleration;
+                _speed /= _bonusAcceleration;
+                _speedIncreased = false;
+                _bonusAcceleration = 1f;
             }
+            else if(_speedIncreased)
+                _accelerationTimerSeconds -= Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.Space))
+                _speed *= _acceleration;
             if (Input.GetKeyUp(KeyCode.Space))
                 _speed /= _acceleration;
             Translate();
@@ -61,6 +69,13 @@ namespace CasualGame.Movement
 
                 transform.rotation = newRotation;
             }
+        }
+        public void IncreaseSpeed(float acceleration, float timeSeconds)
+        {
+            _bonusAcceleration = acceleration;
+            _accelerationTimerSeconds = timeSeconds;
+            _speed *= acceleration;
+            _speedIncreased = true;
         }
     }
 }
