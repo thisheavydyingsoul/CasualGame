@@ -1,4 +1,5 @@
 ﻿using CasualGame.Movement;
+using CasualGame.PickUp;
 using CasualGame.Shooting;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace CasualGame
 {
 
     [RequireComponent(typeof(CharacterMovementController), typeof(ShootingController))]
-    public class BaseCharacter : MonoBehaviour
+    public abstract class BaseCharacter : MonoBehaviour
     {
 
         [SerializeField]
@@ -33,7 +34,7 @@ namespace CasualGame
 
         protected void Start()
         {
-            _shootingController.SetWeapon(_baseWeaponPrefab, _hand);
+            SetWeapon(_baseWeaponPrefab);
         }
         protected void Update()
         {
@@ -54,11 +55,29 @@ namespace CasualGame
         {
             if (LayerUtils.IsBullet(other.gameObject))
             {
+
                 var bullet = other.gameObject.GetComponent<Bullet>();
 
                 _health -= bullet.Damage;
                 Destroy(other.gameObject);
             }
+            else if (LayerUtils.IsPickUp(other.gameObject))
+            {
+                var pickUp = other.gameObject.GetComponent<PickUpItem>();
+                pickUp.PickUp(this);
+                
+                Destroy(other.gameObject);
+            }
+        }
+
+        public void IncreaseSpeed(float acceleration, float seconds)
+        {
+            _characterMovementController.IncreaseSpeed(acceleration, seconds);
+        }
+        public void SetWeapon(Weapon weapon)
+        {
+            _shootingController.SetWeapon(weapon, _hand);
+
         }
     }
 }

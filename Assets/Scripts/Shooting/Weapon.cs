@@ -15,7 +15,10 @@ namespace CasualGame.Shooting
         public float ShootFrequencySec { get; private set; } = 1f;
 
         [SerializeField]
-        private float _damage = 1f;
+        private float _minDamage = 1f;
+
+        [SerializeField]
+        private float _maxDamage = 1f;
 
         [SerializeField]
         private float _bulletMaxFlyDistance = 10f;
@@ -34,7 +37,7 @@ namespace CasualGame.Shooting
             target.y = 0;
             target.Normalize();
 
-            bullet.Inintialize(target, _bulletMaxFlyDistance, _bulletFlySpeed, _damage);
+            bullet.Inintialize(target, _bulletMaxFlyDistance, _bulletFlySpeed, Random.Range(0, 100) > 25 ? _minDamage : _maxDamage);
         }
     }
 }
