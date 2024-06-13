@@ -13,7 +13,7 @@ namespace CasualGame.Shooting
         private Collider[] _colliders = new Collider[2];
         private float _nextShootTimerSec;
         private GameObject _target;
-        
+
         void Update()
         {
             _target = GetTarget();
@@ -29,7 +29,7 @@ namespace CasualGame.Shooting
 
         public void SetWeapon(Weapon weaponPrefab, Transform hand)
         {
-            if(_weapon != null)
+            if (_weapon != null)
                 Destroy(_weapon.gameObject);
             _weapon = Instantiate(weaponPrefab, hand);
             _weapon.transform.localPosition = Vector3.zero;
@@ -41,20 +41,12 @@ namespace CasualGame.Shooting
             GameObject target = null;
             var position = _weapon.transform.position;
             var radius = _weapon.ShootRadius;
-            var mask = gameObject.layer == 3 ? LayerUtils.EnemyMask : LayerUtils.PlayerMask;
+            var mask = LayerUtils.IsEnemy(gameObject) ? LayerUtils.PlayerMask : LayerUtils.EnemyMask;
             var size = Physics.OverlapSphereNonAlloc(position, radius, _colliders, mask);
             if (size > 0)
             {
-                for (int i = 0; i < size; i++)
-                {
-                    if(_colliders[i].gameObject.layer != gameObject.layer)
-                    { 
-                        target = _colliders[i].gameObject;
-                        break;
-                    }
-                }
+                target = _colliders[0].gameObject;
             }
-
             return target;
         }
     }

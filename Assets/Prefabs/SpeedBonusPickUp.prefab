@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _acceleration: 2
-  _timerSeconds: 10
+  _timerSeconds: 2
 --- !u!1 &6803322217566036163
 GameObject:
   m_ObjectHideFlags: 0

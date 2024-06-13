@@ -18,10 +18,6 @@ namespace CasualGame.Movement
         public Vector3 MovementDirection { get; set; }
         public Vector3 LookDirection { get; set; }
 
-        private float _accelerationTimerSeconds = 0f;
-        private float _bonusAcceleration = 1f;
-        private bool _speedIncreased = false;
-
         private CharacterController _characterController;
 
         protected void Awake()
@@ -30,21 +26,8 @@ namespace CasualGame.Movement
         }
 
         protected void Update()
-        { 
-            if (_speedIncreased && _accelerationTimerSeconds <= 0)
-            {
-                _speed /= _bonusAcceleration;
-                _speedIncreased = false;
-                _bonusAcceleration = 1f;
-            }
-            else if(_speedIncreased)
-                _accelerationTimerSeconds -= Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.Space))
-                _speed *= _acceleration;
-            if (Input.GetKeyUp(KeyCode.Space))
-                _speed /= _acceleration;
+        {
             Translate();
-
             if (_maxRadiansDelta > 0f && LookDirection != Vector3.zero)
                 Rotate();
         }
@@ -70,12 +53,13 @@ namespace CasualGame.Movement
                 transform.rotation = newRotation;
             }
         }
-        public void IncreaseSpeed(float acceleration, float timeSeconds)
-        {
-            _bonusAcceleration = acceleration;
-            _accelerationTimerSeconds = timeSeconds;
-            _speed *= acceleration;
-            _speedIncreased = true;
-        }
+
+        public void Accelerate() => _speed *= _acceleration;
+        public void Decelerate() => _speed /= _acceleration;
+
+        public void Accelerate(float acceleration) => _speed *= acceleration;
+
+        public void Decelerate(float deceleration) => _speed /= deceleration;
+
     }
 }

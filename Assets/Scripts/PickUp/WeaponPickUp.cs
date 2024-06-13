@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CasualGame.PickUp
 {
-    public class PickUpWeapon : PickUpItem
+    public class WeaponPickUp : ItemPickUp
     {
         [SerializeField]
         private Weapon _weaponPrefab;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CasualGame.PickUp
 {
-    public class PickUpSpeedBonus : PickUpItem
+    public class SpeedBonusPickUp : BonusPickUp
     {
         [SerializeField]
         private float _acceleration = 2f;
@@ -13,8 +13,11 @@ namespace CasualGame.PickUp
         public override void PickUp(BaseCharacter character)
         {
             base.PickUp(character);
-            Debug.Log("Speed Bonus Picked Up");
-            character.IncreaseSpeed(_acceleration, _timerSeconds);
+            ((PlayerCharacter)character).PickUpBonus(this, _timerSeconds);
+            ((PlayerCharacter)character).Accelerate(_acceleration);
         }
+
+        public override void EndBonus(PlayerCharacter playerCharacter) => playerCharacter.Decelerate(_acceleration);
+
     }
 }

@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace CasualGame.PickUp
 {
-    public abstract class PickUpItem : MonoBehaviour
+    public abstract class ItemPickUp : MonoBehaviour
     {
-        public event Action<PickUpItem> OnPickedUp;
+        public event Action<ItemPickUp> OnPickedUp;
         
         public virtual void PickUp(BaseCharacter character)
         {
