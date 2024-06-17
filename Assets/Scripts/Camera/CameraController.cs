@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CasualGame.Scripts;
+using System;
 using UnityEngine;
 
 namespace CasualGame.Camera
@@ -12,22 +13,23 @@ namespace CasualGame.Camera
 
         [SerializeField]
         private PlayerCharacter _player;
+        
         protected void Awake()
         {
             if (_player == null)
-                throw new NullReferenceException($"Follow camera can't follow null player - {nameof(_player)}");
+                CharacterSpawner.SpawnPlayer();
         }
 
         protected void LateUpdate()
         {
             if (_player == null)
-            {
-                return;
-            }
+                CharacterSpawner.SpawnPlayer();
             Vector3 targetRotation = _rotationOffset - _followCameraOffset;
 
             transform.position = _player.transform.position + _followCameraOffset;
             transform.rotation = Quaternion.LookRotation(targetRotation, Vector3.up);
         }
+
+        public void SetPlayer(PlayerCharacter player) => _player = player;
     }
 }

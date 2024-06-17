@@ -14,8 +14,9 @@ namespace CasualGame
         public static readonly int EnemyLayer = LayerMask.NameToLayer(EnemyLayerName);
 
         public static readonly int PlayerMask = LayerMask.GetMask(PlayerLayerName);
-
         public static readonly int EnemyMask = LayerMask.GetMask(EnemyLayerName);
+        public static readonly int CharacterMask = LayerMask.GetMask(EnemyLayerName, PlayerLayerName);
+        public static readonly int PickUpMask = LayerMask.GetMask(PickUpLayerName);
 
 
         public static bool IsBullet(GameObject other) => other.layer == BulletLayer;

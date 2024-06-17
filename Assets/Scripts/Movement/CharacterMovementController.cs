@@ -58,8 +58,9 @@ namespace CasualGame.Movement
         public void Decelerate() => _speed /= _acceleration;
 
         public void Accelerate(float acceleration) => _speed *= acceleration;
-
         public void Decelerate(float deceleration) => _speed /= deceleration;
 
+        public void StartRunAway(float runAwaySpeedDiff) => _speed += runAwaySpeedDiff;
+        public void StopRunAway(float runAwaySpeedDiff) => _speed -= runAwaySpeedDiff;
     }
 }

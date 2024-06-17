@@ -13,11 +13,11 @@ namespace CasualGame.PickUp
         public override void PickUp(BaseCharacter character)
         {
             base.PickUp(character);
-            ((PlayerCharacter)character).PickUpBonus(this, _timerSeconds);
-            ((PlayerCharacter)character).Accelerate(_acceleration);
+            character.PickUpBonus(this, _timerSeconds);
+            character.Accelerate(_acceleration);
         }
 
-        public override void EndBonus(PlayerCharacter playerCharacter) => playerCharacter.Decelerate(_acceleration);
+        public override void EndBonus(BaseCharacter character) => character.Decelerate(_acceleration);
 
     }
 }

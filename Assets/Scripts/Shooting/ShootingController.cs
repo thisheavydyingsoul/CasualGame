@@ -6,6 +6,7 @@ namespace CasualGame.Shooting
     public class ShootingController : MonoBehaviour
     {
         public bool HasTarget => _target != null;
+        public bool RunAway = false;
         public Vector3 TargetPosition => _target.transform.position;
 
         private Weapon _weapon;
@@ -16,6 +17,11 @@ namespace CasualGame.Shooting
 
         void Update()
         {
+            if (RunAway)
+            {
+                _target = null;
+                return;
+            }
             _target = GetTarget();
             _nextShootTimerSec -= Time.deltaTime;
             if (_nextShootTimerSec < 0)
