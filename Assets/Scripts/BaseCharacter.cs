@@ -18,6 +18,9 @@ namespace CasualGame
         private Weapon _baseWeaponPrefab;
 
         [SerializeField]
+        private Animator _animator;
+
+        [SerializeField]
         private Transform _hand;
 
         [SerializeField]
@@ -30,14 +33,13 @@ namespace CasualGame
         protected CharacterMovementController _characterMovementController;
         protected ShootingController _shootingController;
 
-
-
         protected virtual void Awake()
         {
             _maxHealth = _health;
             _movementDirectionSource = GetComponent<IMovementDirectionSource>();
             _characterMovementController = GetComponent<CharacterMovementController>();
             _shootingController = GetComponent<ShootingController>();
+            _animator = GetComponent<Animator>();
         }
 
         protected virtual void Start()
@@ -52,9 +54,15 @@ namespace CasualGame
                 lookDirection = (_shootingController.TargetPosition - transform.position).normalized;
             _characterMovementController.MovementDirection = direction;
             _characterMovementController.LookDirection = lookDirection;
+            _animator.SetBool("IsMoving", direction != Vector3.zero);
+            _animator.SetBool("IsShooting", _shootingController.HasTarget);
 
             if (_health <= 0)
                 Destroy(gameObject);
+        }
+
+        protected void BonusesCheck()
+        {
             BonusPickUp[] bonuses = _bonusesAndTimersSeconds.Keys.ToArray();
             foreach (BonusPickUp bonus in bonuses)
             {
@@ -85,13 +93,16 @@ namespace CasualGame
         }
 
         public void Accelerate(float acceleration) => _characterMovementController.Accelerate(acceleration);
+
         public void Decelerate(float deceleration) => _characterMovementController.Decelerate(deceleration);
+
         public void PickUpBonus(BonusPickUp bonus, float timeSeconds)
         {
             if (_bonusesAndTimersSeconds.TryAdd(bonus, timeSeconds))
                 return;
             _bonusesAndTimersSeconds[bonus] = timeSeconds;
         }
+
         public virtual void SetWeapon(Weapon weapon)
         {
             _shootingController.SetWeapon(weapon, _hand);

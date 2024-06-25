@@ -27,7 +27,6 @@ namespace CasualGame.Enemy.States
         }
         public override void StartExecuting()
         {
-            //Debug.Log("MoveForward");
 
         }
         public override void StopExecuting()

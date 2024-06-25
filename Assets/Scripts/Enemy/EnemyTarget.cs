@@ -78,6 +78,8 @@ namespace CasualGame.Enemy
             else return Vector3.zero;
         }
 
+        public bool IsClosestPlayer() => Closest.gameObject == _player.gameObject;
+
         public Vector3 AgentTransform() => _agentTransform.position;
     } 
 }
