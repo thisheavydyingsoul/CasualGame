@@ -36,7 +36,7 @@ namespace CasualGame.Enemy.States
         }
         public override void StartExecuting()
         {
-            //Debug.Log("FindWay");
+
         }
         public override void StopExecuting()
         {

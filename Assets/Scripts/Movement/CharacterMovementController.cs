@@ -11,10 +11,12 @@ namespace CasualGame.Movement
         private float _speed = 1f;
 
         [SerializeField]
-        private float _acceleration = 1f;
+        private float _acceleratedSpeed = 1f;
 
         [SerializeField]
         private float _maxRadiansDelta = 10f;
+
+        private float _actualSpeed = 1f;
         public Vector3 MovementDirection { get; set; }
         public Vector3 LookDirection { get; set; }
 
@@ -23,6 +25,7 @@ namespace CasualGame.Movement
         protected void Awake()
         {
             _characterController = GetComponent<CharacterController>();
+            _actualSpeed = _speed;
         }
 
         protected void Update()
@@ -34,7 +37,7 @@ namespace CasualGame.Movement
 
         private void Translate()
         {
-            var delta = MovementDirection * _speed * Time.deltaTime;
+            var delta = MovementDirection * _actualSpeed * Time.deltaTime;
             _characterController.Move(delta);
         }
 
@@ -54,13 +57,23 @@ namespace CasualGame.Movement
             }
         }
 
-        public void Accelerate() => _speed *= _acceleration;
-        public void Decelerate() => _speed /= _acceleration;
+        public void Accelerate() => _actualSpeed = _acceleratedSpeed;
+        public void Decelerate() => _actualSpeed = _speed;
 
-        public void Accelerate(float acceleration) => _speed *= acceleration;
-        public void Decelerate(float deceleration) => _speed /= deceleration;
+        public void Accelerate(float acceleration) { 
+            _actualSpeed *= acceleration;
+            _speed *= acceleration;
+            _acceleratedSpeed *= acceleration;
+        }
+        public void Decelerate(float deceleration)
+        {
+            _actualSpeed /= deceleration;
+            _speed /= deceleration;
+            _acceleratedSpeed /= deceleration;
+        }
 
-        public void StartRunAway(float runAwaySpeedDiff) => _speed += runAwaySpeedDiff;
-        public void StopRunAway(float runAwaySpeedDiff) => _speed -= runAwaySpeedDiff;
+        public void StartRunAway(float runAwaySpeedDiff) => _actualSpeed += runAwaySpeedDiff;
+
+        public void StopRunAway(float runAwaySpeedDiff) => _actualSpeed -= runAwaySpeedDiff;
     }
 }
