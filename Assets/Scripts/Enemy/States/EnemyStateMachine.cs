@@ -60,7 +60,7 @@ namespace CasualGame.Enemy.States
             {
                  new Transition(
                     idleState,
-                    () => target.DistanceToPlayer() >= NavMeshTurnOffDistance)
+                    () => target.IsClosestPlayer())
             });
         }
     }
