@@ -57,6 +57,8 @@ namespace CasualGame.Scripts
 
         public static void SpawnPlayer()
         {
+            if (_spawners.Count == 0)
+                return;
             CharacterSpawner spawner = _spawners[Random.Range(0, _spawners.Count)];
             var randomPointInsideRange = Random.insideUnitCircle * spawner.Range;
             var randomPosition = new Vector3(randomPointInsideRange.x, 0.5f, randomPointInsideRange.y) + spawner.transform.position;

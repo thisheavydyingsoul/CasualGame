@@ -39,7 +39,6 @@ namespace CasualGame.FSM
                     _currentState.StartExecuting();
                     break;
                 }
-            Debug.Log(_currentState);
             _currentState.Execute();
         }
     }
