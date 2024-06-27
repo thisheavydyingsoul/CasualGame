@@ -9,8 +9,6 @@ namespace CasualGame.Scripts
 {
     public class CharacterSpawner : MonoBehaviour
     {
-        public static int curEnemyCounter  = 0;
-
         private static readonly List<CharacterSpawner> _spawners = new List<CharacterSpawner>();
 
         [SerializeField]
@@ -26,11 +24,8 @@ namespace CasualGame.Scripts
 
         [SerializeField]
         private float _maxSpawnIntervalSeconds = 60;
-
-        [SerializeField]
-        private static int _maxEnemyCount = 10;
-
         
+        private LevelOverseer _levelOverseer;
         private float _currentSpawnIntervalSeconds;
         private float _currentSpawnTimerSeconds;
 
@@ -38,11 +33,13 @@ namespace CasualGame.Scripts
 
         protected void Awake()
         {
+            _levelOverseer = FindAnyObjectByType<LevelOverseer>();
             _spawners.Add(this);
         }
+
         protected void Update()
         {
-            if (_maxEnemyCount <= curEnemyCounter)
+            if (_levelOverseer.StopSpawn)
                 return;
             _currentSpawnTimerSeconds += Time.deltaTime;
             if (_currentSpawnTimerSeconds <= _currentSpawnIntervalSeconds)
@@ -52,7 +49,7 @@ namespace CasualGame.Scripts
             var randomPointInsideRange = Random.insideUnitCircle * Range;
             var randomPosition = new Vector3(randomPointInsideRange.x, 0f, randomPointInsideRange.y) + transform.position;
             Instantiate(_enemyPrefab, randomPosition, Quaternion.identity, transform);
-            curEnemyCounter++;
+            _levelOverseer.EnemySpawned();
         }
 
         public static void SpawnPlayer()
@@ -61,7 +58,7 @@ namespace CasualGame.Scripts
                 return;
             CharacterSpawner spawner = _spawners[Random.Range(0, _spawners.Count)];
             var randomPointInsideRange = Random.insideUnitCircle * spawner.Range;
-            var randomPosition = new Vector3(randomPointInsideRange.x, 0.5f, randomPointInsideRange.y) + spawner.transform.position;
+            var randomPosition = new Vector3(randomPointInsideRange.x, 0f, randomPointInsideRange.y) + spawner.transform.position;
             PlayerCharacter player = Instantiate(spawner._playerPrefab, randomPosition, Quaternion.identity, spawner.transform);
             CameraController cameraController = FindObjectOfType<CameraController>();
             cameraController.SetPlayer(player);
