@@ -6,7 +6,7 @@ using UnityEngine;
 namespace CasualGame.Enemy
 {
     [RequireComponent(typeof(EnemyDirectionController), typeof(EnemyAiController))]
-    public class EnemyCharacter: BaseCharacter
+    public class EnemyCharacter : BaseCharacter
     {
         private EnemyAiController _aiController;
         private EnemyDirectionController _directionController;
@@ -16,16 +16,17 @@ namespace CasualGame.Enemy
             _aiController = GetComponent<EnemyAiController>();
             _directionController = GetComponent<EnemyDirectionController>();
             _directionController.OnStartRunAway += StartRunAway;
-            _directionController.OnStopRunAway  += StopRunAway;
+            _directionController.OnStopRunAway += StopRunAway;
 
         }
+
         protected override void Update()
         {
-            if (_health <= 0)
-                CharacterSpawner.curEnemyCounter--;
             base.Update();
+            if (_health <= 0)
+                return;
             if (_health / _maxHealth * 100 < _aiController.HPToRunAwayPercent)
-               _aiController.HPToRunAway();
+                _aiController.HPToRunAway();
         }
 
         public override void SetWeapon(Weapon weapon)
@@ -46,5 +47,9 @@ namespace CasualGame.Enemy
             _shootingController.RunAway = false;
         }
 
+        public void Death() {
+            _levelOverseer.EnemyKilled();
+            Destroy(gameObject);
+        }
     }
 }

@@ -22,6 +22,8 @@ namespace CasualGame.Movement
 
         private CharacterController _characterController;
 
+        private bool _isIdle = false;
+
         protected void Awake()
         {
             _characterController = GetComponent<CharacterController>();
@@ -30,6 +32,8 @@ namespace CasualGame.Movement
 
         protected void Update()
         {
+            if (_isIdle)
+                return;
             Translate();
             if (_maxRadiansDelta > 0f && LookDirection != Vector3.zero)
                 Rotate();
@@ -58,6 +62,7 @@ namespace CasualGame.Movement
         }
 
         public void Accelerate() => _actualSpeed = _acceleratedSpeed;
+
         public void Decelerate() => _actualSpeed = _speed;
 
         public void Accelerate(float acceleration) { 
@@ -75,5 +80,8 @@ namespace CasualGame.Movement
         public void StartRunAway(float runAwaySpeedDiff) => _actualSpeed += runAwaySpeedDiff;
 
         public void StopRunAway(float runAwaySpeedDiff) => _actualSpeed -= runAwaySpeedDiff;
+
+        public void StopMoving() => _isIdle = true;
+
     }
 }

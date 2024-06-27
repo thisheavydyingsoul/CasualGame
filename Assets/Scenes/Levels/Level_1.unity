@@ -4258,6 +4258,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 781120464812793011, guid: c079c6b7891289145a539fd6c4ae7670, type: 3}
   m_PrefabInstance: {fileID: 48656427}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1123235805
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1123235806}
+  - component: {fileID: 1123235807}
+  m_Layer: 0
+  m_Name: LevelOverseer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1123235806
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123235805}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1402697217}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1123235807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123235805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70257b3f7f10b724a832ade08cb6faff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxEnemyCounter: 10
 --- !u!1 &1148106206
 GameObject:
   m_ObjectHideFlags: 0
@@ -5031,6 +5076,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 699544283}
+  - {fileID: 1123235806}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1411201677
@@ -6602,7 +6648,7 @@ GameObject:
   - component: {fileID: 1712628219}
   - component: {fileID: 1712628218}
   m_Layer: 0
-  m_Name: Environment
+  m_Name: ==ENVIRONMENT==
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6637,7 +6683,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 78cc1828d7956664995cfe11727ffb45, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: a808e81ac3670ac40b51a33544384909, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &1712628219
 Transform:

@@ -17,6 +17,8 @@ namespace CasualGame.Shooting
 
         void Update()
         {
+            if (_weapon == null)
+                return;
             if (RunAway)
             {
                 _target = null;
@@ -40,6 +42,12 @@ namespace CasualGame.Shooting
             _weapon = Instantiate(weaponPrefab, hand);
             _weapon.transform.localPosition = Vector3.zero;
             _weapon.transform.localRotation = Quaternion.identity;
+        }
+
+        public void RemoveWeapon()
+        {
+            Destroy(_weapon.gameObject);
+            _weapon = null;
         }
 
         private GameObject GetTarget()
