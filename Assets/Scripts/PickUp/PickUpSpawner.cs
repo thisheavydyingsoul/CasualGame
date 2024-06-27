@@ -35,7 +35,7 @@ namespace CasualGame.PickUp
             _currentSpawnTimerSeconds = 0f;
             _currentCount++;
             var randomPointInsideRange = Random.insideUnitCircle * _range;
-            var randomPosition = new Vector3(randomPointInsideRange.x, 0f, randomPointInsideRange.y) + transform.position;
+            var randomPosition = new Vector3(randomPointInsideRange.x, 1f, randomPointInsideRange.y) + transform.position;
 
             var pickUp = Instantiate(_pickUpPrefab, randomPosition, Quaternion.identity, transform);
             pickUp.OnPickedUp += OnItemPickedUp;

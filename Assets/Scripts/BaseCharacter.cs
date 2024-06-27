@@ -12,13 +12,14 @@ namespace CasualGame
     [RequireComponent(typeof(CharacterMovementController), typeof(ShootingController))]
     public abstract class BaseCharacter : MonoBehaviour
     {
+        private event Action Death;
         private readonly Dictionary<BonusPickUp, float> _bonusesAndTimersSeconds = new Dictionary<BonusPickUp, float>();
 
         [SerializeField]
-        private Weapon _baseWeaponPrefab;
+        protected Weapon _baseWeaponPrefab;
 
         [SerializeField]
-        private Animator _animator;
+        protected Animator _animator;
 
         [SerializeField]
         private Transform _hand;
@@ -27,27 +28,37 @@ namespace CasualGame
         protected float _health = 2f;
 
         protected float _maxHealth = 2f;
-
+        protected LevelOverseer _levelOverseer;
         protected IMovementDirectionSource _movementDirectionSource;
 
         protected CharacterMovementController _characterMovementController;
         protected ShootingController _shootingController;
 
+
         protected virtual void Awake()
         {
+            _levelOverseer = FindAnyObjectByType<LevelOverseer>();
             _maxHealth = _health;
             _movementDirectionSource = GetComponent<IMovementDirectionSource>();
             _characterMovementController = GetComponent<CharacterMovementController>();
             _shootingController = GetComponent<ShootingController>();
             _animator = GetComponent<Animator>();
+            Death += OnDeath;
+            Death += _characterMovementController.StopMoving;
         }
 
         protected virtual void Start()
         {
             _shootingController.SetWeapon(_baseWeaponPrefab, _hand);
         }
+
         protected virtual void Update()
         {
+            if (_health <= 0)
+            {
+                Death?.Invoke();
+                return;
+            }
             var direction = _movementDirectionSource.MovementDirection;
             var lookDirection = direction;
             if (_shootingController.HasTarget)
@@ -56,9 +67,6 @@ namespace CasualGame
             _characterMovementController.LookDirection = lookDirection;
             _animator.SetBool("IsMoving", direction != Vector3.zero);
             _animator.SetBool("IsShooting", _shootingController.HasTarget);
-
-            if (_health <= 0)
-                Destroy(gameObject);
         }
 
         protected void BonusesCheck()
@@ -77,7 +85,7 @@ namespace CasualGame
         }
 
         protected virtual void OnTriggerEnter(Collider other)
-        { 
+        {
             if (LayerUtils.IsBullet(other.gameObject))
             {
                 var bullet = other.gameObject.GetComponent<Bullet>();
@@ -103,9 +111,16 @@ namespace CasualGame
             _bonusesAndTimersSeconds[bonus] = timeSeconds;
         }
 
-        public virtual void SetWeapon(Weapon weapon)
+        public virtual void SetWeapon(Weapon weapon) => _shootingController.SetWeapon(weapon, _hand);
+
+        public virtual void OnDeath()
         {
-            _shootingController.SetWeapon(weapon, _hand);
+            Death -= OnDeath;
+            Death -= _characterMovementController.StopMoving;
+            _animator.SetTrigger("Death");
+            _animator.SetBool("IsShooting", false);
+
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿
 using CasualGame.PickUp;
 using CasualGame.Shooting;
+using System;
 using UnityEngine;
 
 namespace CasualGame.Enemy
@@ -67,6 +68,7 @@ namespace CasualGame.Enemy
 
             return size;
         }
+
         private float DistanceFromAgentTo(GameObject go) => (_agentTransform.position - go.transform.position).magnitude;
 
         public void ResetClosest() => Closest = null;
@@ -78,8 +80,13 @@ namespace CasualGame.Enemy
             else return Vector3.zero;
         }
 
-        public bool IsClosestPlayer() => Closest.gameObject == _player.gameObject;
+        public bool IsClosestPlayer()
+        {
+            while (Closest == null)
+                FindClosest();
+            return Closest.gameObject == _player.gameObject;
+        }
 
         public Vector3 AgentTransform() => _agentTransform.position;
-    } 
+    }
 }
